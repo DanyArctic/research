@@ -1,10 +1,14 @@
 #include <iostream>
+#include <string>
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
-    int e =5;
-    std::cout << e << std::endl;
-    std::cin >> e;
-    std::cout << e << std::endl;
+    std::cout << "Hey there! I am Intel nEHb inside, human cyborg relations. What is your name?" << std::endl;
+    std::string name;
+    std::cin >> name;
+    std::cout << "It's pleasure to meet you, " << name << "! What year were you born in?" << std::endl;
+    int curdate =2020;
+    int bdate;
+    std::cin >> bdate;
+    std::cout << "That means thet you are " << curdate-bdate << " years old." << std::endl;
     return 0;
 }
