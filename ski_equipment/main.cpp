@@ -7,17 +7,28 @@ int main() {
     std::cout << "Do you want to buy ski or snowboard?" << std::endl; //just comment
     std::string answer;
     std::cin >> answer;
-    if (answer=="ski")
+    if (answer == "ski")
     {
         std::cout << "loser!" << std::endl;
     }
-    else if (answer=="snowboard")
+    else if (answer == "snowboard")
     {
-        std::cout << "yeah, boy!" << std::endl;
+        std::cout << "yeah, boy!" << std::endl << "What's your weight then?" << std::endl;
+        int weight = 0;
+        std::cin >> weight;
+        if (weight < 50)
+        {
+            std::cout << "Your sise of board is S" << std::endl;
+        }
+        else
+        {
+            std::cout << "Go to GYM!" << std::endl;
+        }
     }
     else
     {
         std::cout << "ничего не понимаю, что ты говоришь" << std::endl;
     }
+
     return 0;
 }
