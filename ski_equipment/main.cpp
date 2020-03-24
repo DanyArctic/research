@@ -9,7 +9,17 @@ int main() {
     std::cin >> answer;
     if (answer == "ski")
     {
-        std::cout << "loser!" << std::endl;
+        std::cout << "loser! but okay, tell my your weight" << std::endl;
+        int weight = 0;
+        std::cin >> weight;
+        if (weight < 60)
+        {
+            std:cout << "then sise of your ski is S" << std::endl;
+        }
+        else
+        {
+            std::cout << "Probably your sise will be Large" << std::endl;
+        }
     }
     else if (answer == "snowboard")
     {
