@@ -1,8 +1,9 @@
 #include <iostream>
 #include <vector>
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 
+template<typename T>
 class Vector //лучше исп. в названиях CamelCase
 {
 public:
@@ -13,10 +14,21 @@ public:
         delete[] array_;
     }
 
-    void push_back(int value) // 8
+    const T& operator[](int index) const
     {
-        int *temp_array = array_; // {5}
-        array_ = new int[position_ + 1]; // {0, 0}
+        return array_[index];
+    }
+
+    int get_size_allocated_memory() const
+    {
+        return allocated_memory_;
+    }
+
+    void push_back(T value) // 8
+    {
+        T *temp_array = array_; // {5}
+        allocated_memory_ = 1 + position_;
+        array_ = new T[allocated_memory_]; // {0, 0}
         for (int i = 0; i < position_; ++i)
         {
             array_[i] = temp_array[i];
@@ -26,7 +38,7 @@ public:
         delete[] temp_array;
     }
 
-    int get_value(int index) const // {5 7 2 8} 0 -> 5 //копирование и создание ссылки для простых переменных одинаково трудозатратно, поэтому оправдано для векторов и тп
+    const T& get_value(int index) const // {5 7 2 8} 0 -> 5 //копирование и создание ссылки для простых переменных одинаково трудозатратно, поэтому оправдано для векторов и тп
     {
         return array_[index];
     }
@@ -38,7 +50,7 @@ public:
 
     void pop_back()
     {
-        array_[position_] = 0; // 8 3 5 0 0 0 0 0 0 0
+        array_[position_] = T(); // 8 3 5 0 0 0 0 0 0 0
         --position_;
     }
 
@@ -74,8 +86,9 @@ public:
     }
 
 private:
-    int *array_ = nullptr; // 0 0 0 0 // когда используем указатель, то всегда пишем "new", смотри в ф-ции push_back
+    T *array_ = nullptr; // 0 0 0 0 // когда используем указатель, то всегда пишем "new", смотри в ф-ции push_back
     int position_ = 0;
+    int allocated_memory_ = 0;
 }; // обязательно ; в конце классов!
 
 /*CamelCase
@@ -83,20 +96,20 @@ snake_case*/
 
 TEST(TypeOfTests, empty_vector_returns_size_0)
 {
-    Vector testing;
-    EXPECT_EQ(0, testing.size()) << "test failed";
+    Vector<std::string> testing;
+    EXPECT_EQ(0, testing.size());
 }
 
 TEST(TypeOfTests, function_empty_returns_true_if_array_is_empty)
 {
-    Vector testing;
-    EXPECT_EQ(testing.empty(), true) << "first part of test failed";
+    Vector<double> testing;
+    EXPECT_TRUE(testing.empty()) << "first part of test failed";
     EXPECT_EQ(0, testing.size()) << "second part of test failed";
 }
 
 TEST(TypeOfTests, vector_with_seven_numbers_returns_size_7)
 {
-    Vector testing;
+    Vector<int> testing;
     testing.push_back(1);
     testing.push_back(5);
     testing.push_back(7);
@@ -109,7 +122,7 @@ TEST(TypeOfTests, vector_with_seven_numbers_returns_size_7)
 
 TEST(TypeOfTests, second_value_returns_right_number)
 {
-    Vector testing;
+    Vector<int> testing;
     testing.push_back(8);
     testing.push_back(3);
     testing.push_back(47);
@@ -122,10 +135,22 @@ TEST(TypeOfTests, second_value_returns_right_number)
     EXPECT_EQ(47, testing.get_value(2)) << "test failed";
 }
 
+TEST(TypeOfTests, third_value_returns_right_word)
+{
+    Vector<std::string> testing;
+    testing.push_back("yo");
+    testing.push_back("how");
+    testing.push_back("are");
+    testing.push_back("you");
+    EXPECT_EQ("you", testing.get_value(3)) << "test failed";
+}
+
+
 int main(int argc, char *argv[])
 {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
+
 }
 
 // написать g_test тест
