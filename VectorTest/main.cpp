@@ -27,7 +27,10 @@ public:
     void push_back(T value) // 8
     {
         T *temp_array = array_; // {5}
-        allocated_memory_ = 1 + position_;
+        if (position_ > 0 && allocated_memory_ <= position_)
+        {
+            allocated_memory_ = allocated_memory_ * 2;
+        }
         array_ = new T[allocated_memory_]; // {0, 0}
         for (int i = 0; i < position_; ++i)
         {
@@ -88,7 +91,7 @@ public:
 private:
     T *array_ = nullptr; // 0 0 0 0 // когда используем указатель, то всегда пишем "new", смотри в ф-ции push_back
     int position_ = 0;
-    int allocated_memory_ = 0;
+    int allocated_memory_ = 1;
 }; // обязательно ; в конце классов!
 
 /*CamelCase
@@ -145,12 +148,19 @@ TEST(TypeOfTests, third_value_returns_right_word)
     EXPECT_EQ("you", testing.get_value(3)) << "test failed";
 }
 
+TEST(VectorTests, allocated_memory_increase)
+{
+    Vector<int> testing;
+    for (int i = 0; i < 33; ++i)
+    {
+        testing.push_back(rand());
+    }
+    EXPECT_EQ(64, testing.get_size_allocated_memory()) << "test failed";
+    EXPECT_EQ(33, testing.size()) << "test failed";
+}
 
 int main(int argc, char *argv[])
 {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
-
 }
-
-// написать g_test тест
