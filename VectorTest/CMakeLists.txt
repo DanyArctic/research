@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 enable_testing()
 find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
-add_executable(VectorTest main.cpp)
+add_executable(VectorTest main.cpp tests.cpp vector.h)
 
 target_link_libraries(VectorTest ${GTEST_BOTH_LIBRARIES})
 
