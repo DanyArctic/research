@@ -32,7 +32,7 @@ public:
         bool check_create_new_array = position_ > 0 && allocated_memory_ <= position_;
         if (check_create_new_array)
         {
-            allocated_memory_ = allocated_memory_ * 2;
+            allocated_memory_ *= 2;
             array_ = new T[allocated_memory_]; // {0, 0}
         }
         for (int i = 0; i < position_; ++i)

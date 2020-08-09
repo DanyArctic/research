@@ -2,4 +2,5 @@ cmake-build-debug/
 .idea/
 .DS_Store
 *.user
-build-VectorTest-Desktop_Qt_5_12_9_clang_64bit-Debug/
+.build-*/
+build-*/
