@@ -26,7 +26,7 @@ bool Circle::has_diametr()
 
 void Circle::set_diameter(double value)
 {
-    diameter_ = value;
+    Circle::set_radius(value / 2.0);
 }
 
 void Circle::set_radius(double value)

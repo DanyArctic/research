@@ -49,6 +49,3 @@ int Rectangle::get_lenght()
 {
     return lenght_;
 }
-
-int height_ = 0;
-int lenght_ = 0;
