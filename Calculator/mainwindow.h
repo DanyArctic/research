@@ -19,9 +19,9 @@ public slots:
 private slots:
     void digitClicked();
 
-    void clear();
+    void clearClicked();
 
-    void equal();
+    void equalClicked();
 
 private:
     Ui::MainWindow *ui;

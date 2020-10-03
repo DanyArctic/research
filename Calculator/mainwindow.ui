@@ -583,7 +583,7 @@ QPushButton:pressed {
     </property>
     <property name="font">
      <font>
-      <pointsize>14</pointsize>
+      <pointsize>21</pointsize>
      </font>
     </property>
     <property name="autoFillBackground">

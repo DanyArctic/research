@@ -25,8 +25,8 @@ MainWindow::MainWindow(QWidget *parent)  //класс - генератор ок�
     connect(ui->Button_8,SIGNAL(clicked()),this,SLOT(digitClicked()));
     connect(ui->Button_9,SIGNAL(clicked()),this,SLOT(digitClicked()));
     connect(ui->Button_plus,SIGNAL(clicked()),this,SLOT(digitClicked()));
-    connect(ui->Button_clear,SIGNAL(clicked()),this,SLOT(clear()));
-    connect(ui->Button_equal,SIGNAL(clicked()),this,SLOT(equal()));
+    connect(ui->Button_clear,SIGNAL(clicked()),this,SLOT(clearClicked()));
+    connect(ui->Button_equal,SIGNAL(clicked()),this,SLOT(equalClicked()));
 }
 
 MainWindow::~MainWindow()
@@ -46,20 +46,14 @@ void MainWindow::digitClicked()
     ui->calc_screen->setText(new_label);
 }
 
-void MainWindow::clear()
+void MainWindow::clearClicked()
 {
-    ui->calc_screen->clear();
     ui->calc_screen->setText("0");
 }
 
-void MainWindow::equal()
+void MainWindow::equalClicked()
 {
-    digitClicked();
-    QString label = ui->calc_screen->text();
-    QStringList list = label.split("+");
-    QStringList list2 = list[1].split("=");
-    QString a = list[0];
-    QString b = list2[0];
     Interaction calc;
-    ui->calc_screen->setText(QString::number(calc.summary(a.toInt(),b.toInt())));
+    QString label = ui->calc_screen->text();
+    ui->calc_screen->setText(QString::number(calc.calculate_expression(label)));
 }
