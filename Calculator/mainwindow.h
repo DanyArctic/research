@@ -22,7 +22,6 @@ private slots:
     void clearClicked();
 
     void equalClicked();
-
 private:
     Ui::MainWindow *ui;
 };

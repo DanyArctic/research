@@ -5,6 +5,7 @@
 #include <iostream>
 #include <QDebug>
 #include "engine.h"
+#include <QKeyEvent>
 
 
 MainWindow::MainWindow(QWidget *parent)  //класс - генератор окна
@@ -27,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent)  //класс - генератор ок�
     connect(ui->Button_plus,SIGNAL(clicked()),this,SLOT(digitClicked()));
     connect(ui->Button_clear,SIGNAL(clicked()),this,SLOT(clearClicked()));
     connect(ui->Button_equal,SIGNAL(clicked()),this,SLOT(equalClicked()));
+    connect(ui->Button_minus,SIGNAL(clicked()),this,SLOT(digitClicked()));
 }
 
 MainWindow::~MainWindow()
