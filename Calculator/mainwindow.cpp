@@ -1,15 +1,15 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
 #include <QString>
 #include <QMessageBox>
 #include <iostream>
 #include <QDebug>
-#include "engine.h"
 #include <QKeyEvent>
+#include "engine.h"
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
 
 
 MainWindow::MainWindow(QWidget *parent)  //класс - генератор окна
-    : QMainWindow(parent)
+    :  QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -29,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent)  //класс - генератор ок�
     connect(ui->Button_clear,SIGNAL(clicked()),this,SLOT(clearClicked()));
     connect(ui->Button_equal,SIGNAL(clicked()),this,SLOT(equalClicked()));
     connect(ui->Button_minus,SIGNAL(clicked()),this,SLOT(digitClicked()));
+    setFocus(Qt::ActiveWindowFocusReason);
 }
 
 MainWindow::~MainWindow()
@@ -58,4 +59,18 @@ void MainWindow::equalClicked()
     Interaction calc;
     QString label = ui->calc_screen->text();
     ui->calc_screen->setText(QString::number(calc.calculate_expression(label)));
+}
+
+void MainWindow::keyPressEvent(QKeyEvent * pEvent)
+{
+    if (pEvent->key() == Qt::Key_Escape)
+    {
+        qApp->quit();
+    }
+    qDebug() << ui->calc_screen->text() << '\n';
+    if (ui->calc_screen->text() == "0")
+    {
+        ui->calc_screen->clear();
+    }
+    QMainWindow::keyPressEvent(pEvent);
 }
