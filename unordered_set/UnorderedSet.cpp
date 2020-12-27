@@ -1,4 +1,5 @@
 #include "UnorderedSet.h"
+#include <iostream>
 
 UnorderedSet::UnorderedSet()
 {
@@ -17,6 +18,14 @@ void UnorderedSet::insert(const std::string &word)
 
 bool UnorderedSet::find(const std::string &word) const
 {
+    for (auto it : words_)
+    {
+        if (it != word)
+        {
+            continue;
+        }
+        return true;
+    }
     return false;
 }
 
