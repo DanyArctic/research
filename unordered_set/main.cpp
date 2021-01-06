@@ -7,12 +7,14 @@ int main()
     try
     {
         my_set.insert("B");
+        my_set.insert("A");
+
     }
     catch (std::exception& e)
     {
         std::cout << "Exception occurred";
     }
-    if (my_set.find("B"))
+    if (my_set.find("A"))
     {
         std::cout << "find" << '\n';
     }

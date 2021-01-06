@@ -18,15 +18,14 @@ void UnorderedSet::insert(const std::string &word)
 
 bool UnorderedSet::find(const std::string &word) const
 {
-    for (auto it : words_)
+    if (words_[hash(word)] == word)
     {
-        if (it != word)
-        {
-            continue;
-        }
         return true;
     }
-    return false;
+    else
+    {
+        return false;
+    }
 }
 
 int UnorderedSet::hash(const std::string &word) const
