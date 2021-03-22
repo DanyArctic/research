@@ -14,6 +14,10 @@ public:
     int size();
 
     void push_back(const int val);
+
+    void push_front(const int val);
+
+    void pop_back();
 private:
 
     Node *front_ = nullptr;
