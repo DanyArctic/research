@@ -1,23 +1,21 @@
 #include "List.h"
-#include "Node.h"
 
-
-int List::size()
+int List::get_size()
 {
-    Node* current = front_;
+    /*Node* current = front_;
     int cnt = 0;
     while (current != nullptr)
     {
         ++cnt;
         current = current->next();
-    }
-    return cnt;
+    } //instead of counting here*/
+    return size;
 }
 
 void List::push_back(const int val)
 {
     Node *current = new Node(val);
-    if (size() == 0)
+    if (size == 0)
     {
         front_ = current;
         back_ = current;
@@ -28,12 +26,13 @@ void List::push_back(const int val)
         back_->set_next(current);
         back_ = current;
     }
+    ++size;
 }
 
 void List::push_front(const int val)
 {
     Node *current = new Node(val);
-    if (size() == 0)
+    if (size == 0)
     {
         front_ = current;
         back_ = current;
@@ -44,6 +43,7 @@ void List::push_front(const int val)
         front_->set_prev(current);
         front_ = current;
     }
+    ++size;
 }
 
 void List::print()
@@ -58,9 +58,18 @@ void List::print()
 
 void List::pop_back()
 {
-    Node *current = new Node(0);
-    delete back_;
-    back_ = current->prev();
+    Node* temp = back_;
+    back_ = back_->prev();
+    delete temp;
     back_->set_next(nullptr);
-    //как получить данные prev от prev? как удалить связи старого back?
+    --size;
+}
+
+void List::pop_front()
+{
+    Node* temp = front_;
+    front_ = front_->next();
+    delete temp;
+    front_->set_prev(nullptr);
+    --size;
 }
