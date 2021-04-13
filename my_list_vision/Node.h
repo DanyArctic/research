@@ -1,20 +1,42 @@
 #pragma once
 
+template<typename T>
 class Node
 {
 public:
-    Node(const int value);
+    Node(T data=T())
+            : data_(data)
+            , next_(nullptr)
+            , prev_(nullptr)
+    {
+
+    }
 
     ~Node() = default;
 
-    Node* next() const;
-    Node* prev() const;
-    void set_next(Node* current);
-    void set_prev(Node* current);
-    int get_value() const;
+    Node* next() const
+    {
+        return next_;
+    }
+    Node* prev() const
+    {
+        return prev_;
+    }
+    void set_next(Node* current)
+    {
+        next_ = current;
+    }
+    void set_prev(Node* current)
+    {
+        prev_ = current;
+    }
+    int get_value() const
+    {
+        return data_;
+    }
 
 private:
-    int value_;
+    T data_;
     Node* next_;
     Node* prev_;
 };
