@@ -9,6 +9,10 @@ void bubble(std::vector<int> &array)
     {
         movement = false;
         for (int i = 0; i < iterations; ++i)
+        /* n - 1
+         * n - 2
+         * n - 3
+         * сложность всё равно остаётся n, не смотря на эту оптимизацию, сокращающую кол-во циклов тут*/
         {
             if (array[i] > array[i + 1])
             {
