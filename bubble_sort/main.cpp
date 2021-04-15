@@ -3,19 +3,23 @@
 
 void bubble(std::vector<int> &array)
 {
-    bool movement;
+    bool movement = true;
+    int iterations = array.size() - 1;
     while (movement)
     {
-        movement = 0;
-        for (int i = 0; i < array.size() - 1; ++i)
+        movement = false;
+        for (int i = 0; i < iterations; ++i)
         {
             if (array[i] > array[i + 1])
             {
                 movement = true;
                 std::swap(array[i], array[i + 1]);
+                /* array[i] += array[i + 1];
+                 * array[i + 1] = array[i] - array[i + 1];
+                 * array[i] -= array[i + 1];*/
             }
         }
-
+        --iterations;
     }
 }
 
