@@ -39,6 +39,11 @@ public:
         }
     }
 
+    T testing_out()
+    {
+        return ;
+    }
+
     int get_size()
     {
         /*Node* current = front_;

@@ -30,7 +30,7 @@ public:
     {
         prev_ = current;
     }
-    int get_value() const
+    T get_value() const
     {
         return data_;
     }
