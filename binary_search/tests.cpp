@@ -7,10 +7,16 @@ TEST(SearchTests, perfect_condition_search_works_fine_and_return_element_positio
     EXPECT_EQ(7, find(data, 8)) << "simple search failed";
 }
 
-TEST(SearchTests, perfect_condition_search_works_fine_and_return_element_position_7_test_two)
+TEST(SearchTests, perfect_condition_search_works_fine_and_return_element_position_4_test_two)
 {
     std::vector<int> data{1,8,79,144,256,364,1720,2264,8795,9987129,123486761};
     EXPECT_EQ(4, find(data, 256)) << "simple search failed";
+}
+
+TEST(SearchTests, perfect_condition_search_works_fine_and_return_element_position_5_test_tree)
+{
+    std::vector<int> data{17,40,44,87,117,1024,11345,345234,3454366,6749679};
+    EXPECT_EQ(5, find(data, 1024)) << "simple search failed";
 }
 
 TEST(SearchTests, searching_first_element_returns_0)
