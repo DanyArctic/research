@@ -4,10 +4,7 @@
 class Field
 {
 public:
-	Field()
-	{
-		
-	};
+	Field() = default;
 
 	~Field() = default;
 
@@ -26,7 +23,10 @@ public:
 		O,
 	};
 	
-	void Print();
+	void print();
+	//void clear();
+	bool wrong_cell_set(size_t x, size_t y) const;
+	void cell_set(size_t x, size_t y, CellState state_x_or_y);
 
 private:
 
@@ -36,4 +36,5 @@ private:
 		{CellState::Empty, CellState::Empty, CellState::Empty},
 		{CellState::Empty, CellState::Empty, CellState::Empty}
 	};
+	int board_size_ = 3;
 };

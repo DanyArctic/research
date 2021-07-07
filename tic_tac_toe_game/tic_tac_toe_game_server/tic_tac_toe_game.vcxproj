@@ -24,6 +24,7 @@
     <ProjectGuid>{8d9618f7-330a-493b-9b0c-f3f4c8baa8f0}</ProjectGuid>
     <RootNamespace>tictactoegame</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>tic_tac_toe_game_server</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -139,9 +140,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Server.h" />
     <ClInclude Include="Field.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Server.cpp" />
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
