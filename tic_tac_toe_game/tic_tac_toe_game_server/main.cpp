@@ -14,10 +14,14 @@ int main()
 	game.print();
 	game.clear_field();
 	game.print();
-	game.cell_set(0, 0, Field::CellState(2));
-	game.cell_set(1, 1, Field::CellState(2));
-	game.cell_set(2, 2, Field::CellState(2));
+	game.cell_set(0, 0, Field::CellState(1));
+	game.cell_set(1, 1, Field::CellState(1));
+	game.cell_set(2, 2, Field::CellState(1));
 	game.print();
+	game.clear_field();
+	game.cell_set(2, 2, Field::CellState(1));
+	game.print();
+	//game.cell_set(2, 2, Field::CellState(1));
 
 	Server serv;
 
@@ -39,8 +43,9 @@ int main()
 	}*/
 	Field::WinState game_result = Field::WinState::Nobody;
 
-	game_result = game.winning_calc();
-	
+	game_result = game.winning_calc(); //почему на пустом поле вылезает 3?
+	std::cout << (int)game_result << std::endl;
+
 	switch (game_result)
 	{
 	case Field::WinState::Tie:
@@ -52,6 +57,8 @@ int main()
 	case Field::WinState::O:
 		std::cout << player_two << " is the winner!" << std::endl;
 		break;
+	default:
+		std::cout << "No one is the winner yet!" << std::endl;
 	}
 
 	return 0;
