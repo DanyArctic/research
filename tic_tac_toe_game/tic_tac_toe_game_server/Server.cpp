@@ -22,3 +22,22 @@ void Server::first_or_second()
 		play_order_ = 2;
 	}
 }
+
+size_t Server::get_play_order() const
+{
+	return play_order_;
+}
+
+size_t Server::set_get_next_play_order()
+{
+	if (play_order_ == 1)
+	{
+		play_order_ = 2;
+		return 2;
+	}
+	else if (play_order_ == 2)
+	{
+		play_order_ = 1;
+		return 1;
+	}
+}

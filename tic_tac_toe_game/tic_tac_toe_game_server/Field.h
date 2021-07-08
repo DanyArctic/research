@@ -17,16 +17,17 @@ public:
 
 	enum class WinState
 	{
-		//Nobody,
+		Nobody,
 		Tie,
 		X,
 		O,
 	};
 	
-	void print();
-	//void clear();
+	void print() const;
+	void clear_field();
 	bool wrong_cell_set(size_t x, size_t y) const;
 	void cell_set(size_t x, size_t y, CellState state_x_or_y);
+	WinState winning_calc() const;
 
 private:
 
@@ -36,5 +37,5 @@ private:
 		{CellState::Empty, CellState::Empty, CellState::Empty},
 		{CellState::Empty, CellState::Empty, CellState::Empty}
 	};
-	int board_size_ = 3;
+	size_t board_size_ = 3;
 };
