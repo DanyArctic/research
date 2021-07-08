@@ -32,7 +32,7 @@ int main()
 
 	serv.first_or_second();
 	int play = serv.get_play_order();
-	std::cout << play << '\n';
+	std::cout << "play_order: " << play << '\n';
 	
 	/*int next = serv.set_get_next_play_order();
 
@@ -43,8 +43,8 @@ int main()
 	}*/
 	Field::WinState game_result = Field::WinState::Nobody;
 
-	game_result = game.winning_calc(); //почему на пустом поле вылезает 3?
-	std::cout << (int)game_result << std::endl;
+	game_result = game.get_win_state(); //почему на пустом поле вылезает 3?
+	std::cout << "game_result: " << (int)game_result << std::endl;
 
 	switch (game_result)
 	{

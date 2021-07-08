@@ -7,10 +7,11 @@ void Field::print() const
 	{
 		for (int j = 0; j < 3; ++j)
 		{
-			std::cout << (int)field_[i][j] << " ";
+			std::cout << static_cast<int>(field_[i][j]) << " ";
 		}
 		std::cout << std::endl;
 	}
+	std::cout << static_cast<int>(win_state_) << std::endl  << std::endl;
 }
 
 bool Field::wrong_cell_set(size_t x, size_t y) const
@@ -25,47 +26,58 @@ void Field::cell_set(size_t x, size_t y, CellState state_x_or_y)
 		std::cout << "Wrong set. Try again." << std::endl;
 	}
 	field_[x][y] = state_x_or_y;
+	++cells_filled_;
+	if (check_win_combination(static_cast<int>(x), static_cast<int>(y)))
+	{
+		win_state_ = state_x_or_y == CellState::X ? WinState::X : WinState::O;
+	}
 }
 
-Field::WinState Field::winning_calc() const
+bool Field::check_rows(int x, CellState cellState) const
 {
-	auto winner_cell_state = [](CellState state)
+	int bingo = 0;
+	for (int i = 0; i < field_.at(0).size(); ++i)
 	{
-		return state == CellState::X ? WinState::X : WinState::O;
-	};
+		if (field_[x][i] == cellState)
+			++bingo;
+		else
+			break;
+	}
+	return bingo == board_size_;
+}
 
-	if (field_[0][0] != CellState::Empty && (field_[0][0] == field_[0][1] && field_[0][1] == field_[0][2] ||
-		field_[0][0] == field_[1][1] && field_[1][1] == field_[2][2] ||
-		field_[0][0] == field_[1][0] && field_[1][0] == field_[2][0]))
+bool Field::check_columns( int y, CellState cellState) const
+{
+	int bingo = 0;
+	for (int i = 0; i < field_.size(); ++i)
 	{
-		return winner_cell_state(field_[0][0]);
+		if (field_[i][y] == cellState)
+			++bingo;
+		else
+			break;
 	}
-	if (field_[0][1] != CellState::Empty && (field_[0][1] == field_[1][1] && field_[1][1] == field_[1][2]))
-	{
-		return winner_cell_state(field_[0][1]);
-	}
-	if (field_[0][2] != CellState::Empty && (field_[0][2] == field_[1][2] && field_[1][2] == field_[2][2] ||
-		field_[0][2] == field_[1][1] && field_[1][1] == field_[2][0]))
-	{
-		return winner_cell_state(field_[0][2]);
-	}
-	if (field_[1][0] != CellState::Empty && (field_[1][0] == field_[1][1] && field_[1][1] == field_[1][2]))
-	{
-		return winner_cell_state(field_[1][0]);
-	}
-	if (field_[2][0] != CellState::Empty && (field_[2][0] == field_[2][1] && field_[2][1] == field_[2][2]))
-	{
-		return winner_cell_state(field_[2][0]);
-	}
+	return bingo == board_size_;
+}
 
-	for (auto &column : field_)
-		for (auto &cell : column)
-			if (cell == CellState::Empty)
-			{
-				return WinState::Nobody;
-			}
+bool Field::check_diagonals(CellState cellState) const
+{
+	return (field_[0][0] == field_[1][1] && field_[1][1] == field_[2][2] && field_[2][2] == cellState) ||
+			(field_[0][2] == field_[1][1] && field_[1][1] == field_[2][0] && field_[2][0] == cellState);
+}
 
-	return WinState::Tie;
+bool Field::check_win_combination(int x, int y) const
+{
+	if (field_.size() < x || field_.at(0).size() < y)
+		return false;
+
+	const CellState cellState = field_.at(x).at(y);
+
+	return (check_rows(x, cellState) || check_columns(y, cellState) || check_diagonals(cellState) || cells_filled_ >= board_size_ * board_size_);
+}
+
+Field::WinState Field::get_win_state() const
+{
+	return win_state_;
 }
 
 void Field::clear_field()
@@ -77,4 +89,6 @@ void Field::clear_field()
 			cell = CellState::Empty;
 		}
 	}
+	cells_filled_ = 0;
+	win_state_ = WinState::Nobody;
 }
