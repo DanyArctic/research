@@ -15,4 +15,3 @@ private:
 	std::string player_two_name_;
 	size_t play_order_ = 0;
 };
-
