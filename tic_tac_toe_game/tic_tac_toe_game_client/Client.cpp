@@ -5,7 +5,48 @@ void Client::set_players_name(const std::string& name_1)
 	player_name_ = name_1;
 }
 
-void Client::get_players_name()
+std::string Client::get_players_name() const
 {
-	std::cout << player_name_;
+	return player_name_;
+}
+
+int Client::get_win_state()
+{
+	return static_cast<int>(win_state_);
+}
+
+void Client::print_field() const
+{
+	std::cout << "#####" << std::endl;
+		for (int i = 0; i < 3; ++i)
+		{
+			for (int j = 0; j < 3; ++j)
+			{
+				std::cout << static_cast<int>(field_[i][j]) << " ";
+			}
+			std::cout << std::endl;
+		}
+	std::cout << "#####" << std::endl;
+
+    if (static_cast<int>(win_state_) != 0)
+    {
+        switch (static_cast<int>(win_state_))
+        {
+        case 1:
+            std::cout << "Draw!" << std::endl;
+            break;
+        case 2:
+            std::cout << "X is a winner!" << std::endl;
+            break;
+        case 3:
+            std::cout << "O is a winner!" << std::endl;
+            break;
+        }
+        std::cout << "Game over." << std::endl;
+    }
+}
+
+std::pair<int, int> Client::current_cell_set(int x, int y)
+{
+    return std::pair<int, int>(x, y);
 }

@@ -4,27 +4,24 @@
 int main()
 {
     Client player;
-    std::cout << "Please enter your name: ";
+    std::cout << "Please enter your name: " << std::endl;
     std::string name;
     std::cin >> name;
     player.set_players_name(name);
-    while (true)
+    while (player.get_win_state() == 0)
     {
-        size_t x = 0;
-        size_t y = 0;
-        std::cout << "Make your move, by coordinates x and y, with space between them: ";
+        int x = 0;
+        int y = 0;
+        std::cout << "Make your move, by coordinates x and y, from 0 to 2, with space between them: " << std::endl;
         std::cin >> x >> y;
+        if (x < 0 || x >= Client::board_size_ || y < 0 || y >= Client::board_size_)
+        {
+            std::cout << "Wrong set. Try again." << std::endl;
+            continue;
+        }
+        player.current_cell_set(x, y);
         system("cls");
+        player.print_field();
     }
+    //restart function?
 }
-
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
-
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
