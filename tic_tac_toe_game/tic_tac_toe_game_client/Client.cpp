@@ -27,10 +27,10 @@ void Client::print_field() const
 			std::cout << std::endl;
 		}
 	std::cout << "#####" << std::endl;
-
-    if (static_cast<int>(win_state_) != 0)
+    int casted_win_state = static_cast<int>(win_state_);
+    if (casted_win_state != 0)
     {
-        switch (static_cast<int>(win_state_))
+        switch (casted_win_state)
         {
         case 1:
             std::cout << "Draw!" << std::endl;
@@ -40,6 +40,9 @@ void Client::print_field() const
             break;
         case 3:
             std::cout << "O is a winner!" << std::endl;
+            break;
+        default:
+            std::cout << "Wrong winner state input." << std::endl;
             break;
         }
         std::cout << "Game over." << std::endl;
