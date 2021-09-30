@@ -49,7 +49,7 @@ int __cdecl main(int argc, char** argv)
     //WSADATA wsaData;
     
 
-    const char* sendbuf = "this is a test";
+    const char *sendbuf = "this is a test"; // not possible to use string?
     char recvbuf[DEFAULT_BUFLEN];
     int iResult;
     int recvbuflen = DEFAULT_BUFLEN;
@@ -66,6 +66,7 @@ int __cdecl main(int argc, char** argv)
     {
         addrinfo* result = client.resolve_adress_port(argv[1], DEFAULT_PORT);
         SOCKET ConnectSocket = client.connect(result);
+
         // Attempt to connect to an address until one succeeds
         client.connect(result);
         freeaddrinfo(result);
@@ -77,16 +78,7 @@ int __cdecl main(int argc, char** argv)
         }
 
         // Send an initial buffer
-        iResult = send(ConnectSocket, sendbuf, (int)strlen(sendbuf), 0);
-        if (iResult == SOCKET_ERROR) 
-        {
-            printf("send failed with error: %d\n", WSAGetLastError());
-            closesocket(ConnectSocket);
-            WSACleanup();
-            return 1;
-        }
-
-        printf("Bytes Sent: %ld\n", iResult);
+        client.send_message(ConnectSocket, sendbuf);
 
         // shutdown the connection since no more data will be sent
         iResult = shutdown(ConnectSocket, SD_SEND);

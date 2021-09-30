@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <string>
 #include <stdexcept>
+#include <iostream>
 
 
 class TCPClient
@@ -30,8 +31,9 @@ public:
 		WSACleanup();
 	}
 	
-	addrinfo *resolve_adress_port(std::string adress, std::string port);
+	addrinfo *resolve_adress_port(const std::string adress, const std::string port);
 	SOCKET connect(addrinfo* adress);
+	void send_message(SOCKET connect_socket, const char* sendbuf);
 	/*
 private:
 	int iResult_;

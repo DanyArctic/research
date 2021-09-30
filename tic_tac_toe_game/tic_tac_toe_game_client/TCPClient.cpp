@@ -1,6 +1,6 @@
 #include "TCPClient.h"
 
-addrinfo *TCPClient::resolve_adress_port(std::string adress, std::string port)
+addrinfo *TCPClient::resolve_adress_port(const std::string adress, const std::string port)
 {
     //ZeroMemory(&hints, sizeof(hints));
     addrinfo hints;
@@ -44,4 +44,15 @@ SOCKET TCPClient::connect(addrinfo *adress)
         return ConnectSocket;
     }
     return INVALID_SOCKET;
+}
+
+void TCPClient::send_message(SOCKET connect_socket, const char *sendbuf)
+{
+    SOCKET result = send(connect_socket, sendbuf, (int)strlen(sendbuf), 0);
+    if (result == SOCKET_ERROR)
+    {
+        throw std::runtime_error("send failed with error: " + std::to_string(WSAGetLastError()) + '\n');
+        closesocket(connect_socket);
+    }
+    std::cout << "Bytes Sent: " << result << std::endl;
 }
