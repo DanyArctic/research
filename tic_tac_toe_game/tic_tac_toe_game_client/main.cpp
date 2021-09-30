@@ -34,25 +34,20 @@ int main()
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
+#include <string_view>
 #include "TCPClient.h"
+
 
 // Need to link with Ws2_32.lib, Mswsock.lib, and Advapi32.lib
 #pragma comment (lib, "Ws2_32.lib")
 #pragma comment (lib, "Mswsock.lib")
 #pragma comment (lib, "AdvApi32.lib")
 
-#define DEFAULT_BUFLEN 512
-#define DEFAULT_PORT "27015"
+constexpr std::string_view DEFAULT_PORT = "27015";
 
 int __cdecl main(int argc, char** argv)
-{
-    //WSADATA wsaData;
-    
-
-    const char *sendbuf = "this is a test"; // not possible to use string?
-    char recvbuf[DEFAULT_BUFLEN];
-    int iResult;
-    int recvbuflen = DEFAULT_BUFLEN;
+{   
+    const char *sendbuf = "this is a test";
 
     // Validate the parameters
     if (argc != 2) 
@@ -65,47 +60,27 @@ int __cdecl main(int argc, char** argv)
     try
     {
         addrinfo* result = client.resolve_adress_port(argv[1], DEFAULT_PORT);
-        SOCKET ConnectSocket = client.connect(result);
-
         // Attempt to connect to an address until one succeeds
-        client.connect(result);
+        bool connected = client.connect(result);
+
         freeaddrinfo(result);
 
-        if (ConnectSocket == INVALID_SOCKET)
+        if (!connected)
         {
-            printf("Unable to connect to server!\n");
+            std::cout << "Unable to connect to server!" << std::endl;
             return 1;
         }
 
         // Send an initial buffer
-        client.send_message(ConnectSocket, sendbuf);
+        client.send_message(sendbuf);
 
         // shutdown the connection since no more data will be sent
-        iResult = shutdown(ConnectSocket, SD_SEND);
-        if (iResult == SOCKET_ERROR) 
-        {
-            printf("shutdown failed with error: %d\n", WSAGetLastError());
-            closesocket(ConnectSocket);
-            WSACleanup();
-            return 1;
-        }
+        //client.connection_shutdown();
 
         // Receive until the peer closes the connection
-        do 
-        {
-            iResult = recv(ConnectSocket, recvbuf, recvbuflen, 0);
-            if (iResult > 0)
-                printf("Bytes received: %d\n", iResult);
-            else if (iResult == 0)
-                printf("Connection closed\n");
-            else
-                printf("recv failed with error: %d\n", WSAGetLastError());
-
-        } while (iResult > 0);
-
-        // cleanup
-        closesocket(ConnectSocket);
-
+        std::cout << client.receive(14);
+        client.send_message(sendbuf);
+        std::cout << client.receive(14);
     }
     catch (const std::runtime_error &error)
     {

@@ -1,6 +1,7 @@
 #include "TCPClient.h"
+#include <vector>
 
-addrinfo *TCPClient::resolve_adress_port(const std::string adress, const std::string port)
+addrinfo *TCPClient::resolve_adress_port(std::string_view adress, std::string_view port)
 {
     //ZeroMemory(&hints, sizeof(hints));
     addrinfo hints;
@@ -11,7 +12,7 @@ addrinfo *TCPClient::resolve_adress_port(const std::string adress, const std::st
 
     // Resolve the server address and port
     addrinfo *result = nullptr;
-    int status = getaddrinfo(adress.c_str(), port.c_str(), &hints, &result);
+    int status = getaddrinfo(std::string(adress).c_str(), std::string(port).c_str(), &hints, &result); //более безопасная конверсия
     
     if (status != 0) 
     {
@@ -20,39 +21,67 @@ addrinfo *TCPClient::resolve_adress_port(const std::string adress, const std::st
 	return result;
 }
 
-SOCKET TCPClient::connect(addrinfo *adress)
+bool TCPClient::connect(addrinfo *adress)
 {
     for (addrinfo* ptr = adress; ptr != nullptr; ptr = ptr->ai_next)
     {
         // Create a SOCKET for connecting to server
-        SOCKET ConnectSocket = socket(ptr->ai_family, ptr->ai_socktype,
+        socket_ = socket(ptr->ai_family, ptr->ai_socktype,
             ptr->ai_protocol);
-        if (ConnectSocket == INVALID_SOCKET) 
+        if (socket_ == INVALID_SOCKET) 
         {
             throw std::runtime_error("socket failed with error: " + std::to_string(WSAGetLastError()) + '\n');
-            return ConnectSocket;
         }
 
         // Connect to server.
-        int result = ::connect(ConnectSocket, ptr->ai_addr, (int)ptr->ai_addrlen);
+        int result = ::connect(socket_, ptr->ai_addr, (int)ptr->ai_addrlen);
         if (result == SOCKET_ERROR) 
         {
-            closesocket(ConnectSocket);
-            ConnectSocket = INVALID_SOCKET;
+            closesocket(socket_);
+            socket_ = INVALID_SOCKET;
             continue;
         }
-        return ConnectSocket;
+        return true;
     }
-    return INVALID_SOCKET;
+    return false;
 }
 
-void TCPClient::send_message(SOCKET connect_socket, const char *sendbuf)
+void TCPClient::send_message(std::string_view message)
 {
-    SOCKET result = send(connect_socket, sendbuf, (int)strlen(sendbuf), 0);
+    int result = send(socket_, message.data(), message.length(), 0);
     if (result == SOCKET_ERROR)
     {
         throw std::runtime_error("send failed with error: " + std::to_string(WSAGetLastError()) + '\n');
-        closesocket(connect_socket);
     }
     std::cout << "Bytes Sent: " << result << std::endl;
+}
+
+std::string TCPClient::receive(int lenght)
+{
+    std::vector<char> buffer(lenght);
+    int result = 0;
+    int recieved = 0;
+    do
+    {
+        result = recv(socket_, buffer.data() + recieved, lenght - recieved, 0); //buffer.data() pointer to [0]
+        if (result > 0)
+        {
+            recieved += result;
+            std::cout << "Bytes received: " << result << std::endl;
+        }
+        else if (result == 0)
+            throw std::runtime_error("Connection closed\n");
+        else
+            throw std::runtime_error("recv failed with error: " + std::to_string(WSAGetLastError()) + '\n');
+    } while (recieved < lenght);
+    return std::string(buffer.begin(), buffer.end());
+}
+
+void TCPClient::connection_shutdown()
+{
+    int result = shutdown(socket_, SD_SEND);
+    if (result == SOCKET_ERROR)
+    {
+        throw std::runtime_error("shutdown failed with error: " + std::to_string(WSAGetLastError()) + '\n');
+    }
 }

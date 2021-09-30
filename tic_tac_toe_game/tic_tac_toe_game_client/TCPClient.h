@@ -21,30 +21,23 @@ public:
 		int result = WSAStartup(MAKEWORD(2, 2), &wsaData);
 		if (result != 0)
 		{
-			printf("WSAStartup failed with error: %d\n", result);
+			std::cout << "WSAStartup failed with error: " << result << std::endl;
 		}
 	}
 	~TCPClient()
 	{
 		// cleanup
-		//closesocket(ConnectSocket_);
+		closesocket(socket_);
 		WSACleanup();
 	}
 	
-	addrinfo *resolve_adress_port(const std::string adress, const std::string port);
-	SOCKET connect(addrinfo* adress);
-	void send_message(SOCKET connect_socket, const char* sendbuf);
-	/*
+	addrinfo *resolve_adress_port(std::string_view adress, std::string_view port);
+	bool connect(addrinfo* adress);
+	void send_message(std::string_view message);
+	void connection_shutdown();
+	std::string receive(int lenght);
+	
 private:
-	int iResult_;
-	WSADATA wsaData_;
-	SOCKET ConnectSocket_ = INVALID_SOCKET;
-	struct addrinfo* result_ = NULL,
-		* ptr_ = NULL,
-		hints_;
-	const char* sendbuf_ = "this is a test";
-	char recvbuf_[DEFAULT_BUFLEN];
-	int recvbuflen_ = DEFAULT_BUFLEN;
-	*/
+	SOCKET socket_ = INVALID_SOCKET;
 };
 
