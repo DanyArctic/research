@@ -34,7 +34,6 @@ int main()
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
-#include <string_view>
 #include "TCPClient.h"
 
 
@@ -47,7 +46,7 @@ constexpr std::string_view DEFAULT_PORT = "27015";
 
 int __cdecl main(int argc, char** argv)
 {   
-    const char *sendbuf = "this is a test";
+    const char *sendbuf = "1 2";
 
     // Validate the parameters
     if (argc != 2) 
@@ -74,13 +73,9 @@ int __cdecl main(int argc, char** argv)
         // Send an initial buffer
         client.send_message(sendbuf);
 
-        // shutdown the connection since no more data will be sent
-        //client.connection_shutdown();
-
         // Receive until the peer closes the connection
-        std::cout << client.receive(14);
-        client.send_message(sendbuf);
-        std::cout << client.receive(14);
+        std::cout << client.receive(3) << std::endl;
+
     }
     catch (const std::runtime_error &error)
     {
