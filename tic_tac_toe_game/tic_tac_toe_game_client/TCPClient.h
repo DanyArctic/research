@@ -13,22 +13,8 @@
 class TCPClient
 {
 public:
-	TCPClient()
-	{
-		// Initialize Winsock
-		WSADATA wsaData;
-		int result = WSAStartup(MAKEWORD(2, 2), &wsaData);
-		if (result != 0)
-		{
-			std::cout << "WSAStartup failed with error: " << result << std::endl;
-		}
-	}
-	~TCPClient()
-	{
-		// cleanup
-		closesocket(socket_);
-		WSACleanup();
-	}
+	TCPClient();
+	~TCPClient();
 	
 	addrinfo *resolve_adress_port(std::string_view adress, std::string_view port);
 	bool connect(addrinfo* adress);

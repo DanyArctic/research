@@ -1,9 +1,26 @@
 #include "TCPServer.h"
 #include <vector>
 
+TCPServer::TCPServer()
+{
+    WSADATA wsaData;
+    int result = WSAStartup(MAKEWORD(2, 2), &wsaData);
+    if (result != 0)
+    {
+        std::cout << "WSAStartup failed with error: " << result << std::endl;
+        exit(0);
+    }
+}
+
+TCPServer::~TCPServer()
+{
+    closesocket(listen_socket_);
+    closesocket(client_socket_);
+    WSACleanup();
+}
+
 addrinfo* TCPServer::resolve_serv_adress_and_port(std::string_view port)
 {
-    //ZeroMemory(&hints, sizeof(hints)); почему не используем это метод, а используем memset? так понимаю эта функция в данном случае заполняет все байты памяти "массива" hints символами '0'
     addrinfo hints;
     memset(&hints, 0, sizeof(hints));
     hints.ai_family = AF_INET;
@@ -27,6 +44,7 @@ void TCPServer::connect(addrinfo *adress)
     listen_socket_ = socket(adress->ai_family, adress->ai_socktype, adress->ai_protocol);
     if (listen_socket_ == INVALID_SOCKET)
     {
+        freeaddrinfo(adress);
         throw std::runtime_error("socket failed with error: " + std::to_string(WSAGetLastError()) + '\n');
     }
 
@@ -34,10 +52,11 @@ void TCPServer::connect(addrinfo *adress)
     int result = bind(listen_socket_, adress->ai_addr, (int)adress->ai_addrlen);
     if (result == SOCKET_ERROR)
     {
+        freeaddrinfo(adress);
         throw std::runtime_error("bind failed with error: " + std::to_string(WSAGetLastError()) + '\n');
     }
 
-    freeaddrinfo(adress); //нет ли тут утечки памяти?
+    //freeaddrinfo(adress); //moved this before throwing exception
 
     result = listen(listen_socket_, SOMAXCONN);
     if (result == SOCKET_ERROR)

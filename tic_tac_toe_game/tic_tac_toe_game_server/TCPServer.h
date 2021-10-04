@@ -13,21 +13,8 @@
 class TCPServer
 {
 public:
-	TCPServer()
-	{
-		WSADATA wsaData;
-		int result = WSAStartup(MAKEWORD(2, 2), &wsaData);
-		if (result != 0) 
-		{
-			std::cout << "WSAStartup failed with error: " << result << std::endl; //тут по идее нужно остановить
-		}
-	}
-	~TCPServer()
-	{
-		closesocket(listen_socket_);
-		closesocket(client_socket_);
-		WSACleanup();
-	}
+	TCPServer();
+	~TCPServer();
 
 	addrinfo* resolve_serv_adress_and_port(std::string_view port);
 	void connect(addrinfo* adress);

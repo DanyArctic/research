@@ -1,6 +1,24 @@
 #include "TCPClient.h"
 #include <vector>
 
+TCPClient::TCPClient()
+{
+    // Initialize Winsock
+    WSADATA wsaData;
+    int result = WSAStartup(MAKEWORD(2, 2), &wsaData);
+    if (result != 0)
+    {
+        std::cout << "WSAStartup failed with error: " << result << std::endl;
+        exit(0);
+    }
+}
+TCPClient::~TCPClient()
+{
+    // cleanup
+    closesocket(socket_);
+    WSACleanup();
+}
+
 addrinfo *TCPClient::resolve_adress_port(std::string_view adress, std::string_view port)
 {
     //ZeroMemory(&hints, sizeof(hints));
