@@ -56,7 +56,7 @@ void TCPServer::connect(addrinfo *adress)
         throw std::runtime_error("bind failed with error: " + std::to_string(WSAGetLastError()) + '\n');
     }
 
-    //freeaddrinfo(adress); //moved this before throwing exception
+    freeaddrinfo(adress);
 
     result = listen(listen_socket_, SOMAXCONN);
     if (result == SOCKET_ERROR)
@@ -77,6 +77,7 @@ std::string TCPServer::receive(int lenght)
     std::vector<char> buffer(lenght);
     int recieved = 0;
     int result = 0;
+    bool find_ending_sym = false;
     do 
     {
         result = recv(client_socket_, buffer.data() + recieved, lenght - recieved, 0);
@@ -101,7 +102,15 @@ std::string TCPServer::receive(int lenght)
         {
             throw std::runtime_error("recv failed with error: " + std::to_string(WSAGetLastError()) + '\n');
         }
-    } while (recieved < lenght);
+        for (int i = 0; i < buffer.size(); ++i)
+        {
+            if (buffer[i] == '$')
+            {
+                find_ending_sym = true;
+                break;
+            }
+        }
+    } while (find_ending_sym == false && recieved < lenght);
+
     return std::string(buffer.begin(), buffer.end());
 }
-

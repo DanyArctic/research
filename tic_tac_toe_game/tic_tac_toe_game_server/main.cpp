@@ -83,8 +83,10 @@ constexpr std::string_view DEFAULT_PORT = "27015";
 
 int __cdecl main(void)
 {
+	Field game;
+	Server engine;
     TCPServer serv;
-	std::string input;
+	std::string input_name_player_one;
 	try
 	{
 		addrinfo* result = serv.resolve_serv_adress_and_port(DEFAULT_PORT);
@@ -92,31 +94,26 @@ int __cdecl main(void)
 
 		// Receive until the peer shuts down the connection
 		
-		input = serv.receive(3);
+		input_name_player_one = serv.receive(128);
+		std::cout << input_name_player_one << std::endl;
     }
     catch (const std::runtime_error& error)
     {
         std::cerr << error.what() << '\n';
     }
-	std::string p1 = { input[0] }; 
-	std::string p2 = { input[2] };
-	size_t res = std::stoll(p1); //saving input date of players move
-	size_t res2 = std::stoll(p2);
-	//std::cout << res << ' ' << res2 << std::endl; trying to see integer results 
+	std::string player_two = "Second player";
+	engine.set_players_name(input_name_player_one, player_two);
+
+	//std::string p1 = { input[0] }; 
+	//std::string p2 = { input[2] };
+	//size_t res = std::stoll(p1); //saving input date of players move
+	//size_t res2 = std::stoll(p2);
+	////std::cout << res << ' ' << res2 << std::endl; trying to see integer results 
 
 	//tests
-	Field game;
-	game.print();
 	
-	game.cell_set(res, res2, Field::CellState(1));
+	//game.cell_set(res, res2, Field::CellState(1));
 	game.print();
-
-	Server engine;
-
-	std::string player_one("Alice");
-	std::string player_two("Daniel");
-
-	engine.set_players_name(player_one, player_two);
 
 	engine.first_or_second();
 	int play = engine.get_play_order();
@@ -141,7 +138,7 @@ int __cdecl main(void)
 		std::cout << "Draw!" << std::endl;
 		break;
 	case Field::WinState::X:
-		std::cout << player_one << " is the winner!" << std::endl;
+		std::cout << input_name_player_one << " is the winner!" << std::endl;
 		break;
 	case Field::WinState::O:
 		std::cout << player_two << " is the winner!" << std::endl;
