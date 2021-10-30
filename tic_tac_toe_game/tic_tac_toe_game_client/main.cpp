@@ -65,10 +65,10 @@ int __cdecl main(int argc, char** argv)
             std::cout << "Wrong set. Try again." << std::endl;
             continue;
         }
-        player.current_cell_set(x, y);
-        system("cls");
+        client.send_message(std::to_string(x)+' '+ std::to_string(y));
+        std::cout << client.receive(name.length()) << std::endl;
+        //system("cls");
         player.print_field();
-
     }
     //restart function?
     return 0;

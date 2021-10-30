@@ -120,16 +120,26 @@ int __cdecl main(void)
 	std::cout << "play_order: " << play << '\n';
 
 	int next = engine.set_get_next_play_order();
-
-	for (int i = 0; i < 5; ++i)
+	
+	Field::WinState game_result = Field::WinState::Nobody;
+	game_result = game.get_win_state();
+	
+	while (game.get_win_state() == Field::WinState::Nobody)
 	{
+		std::string input = serv.receive(3);
+		std::string p1 = { input[0] };
+		std::string p2 = { input[2] };
+		size_t res = std::stoll(p1); //saving input date of players move
+		size_t res2 = std::stoll(p2);
+		std::cout << res << ' ' << res2 << std::endl; //trying to see integer results 
+		game.cell_set(res, res2, Field::CellState(1));
+		game.print();
 		std::cout << next << '\n';
 		next = engine.set_get_next_play_order();
 	}
 	
-	Field::WinState game_result = Field::WinState::Nobody;
+	
 
-	game_result = game.get_win_state(); //почему на пустом поле вылезает 3?
 	std::cout << "game_result: " << (int)game_result << std::endl;
 
 	switch (game_result)
