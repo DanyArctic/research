@@ -138,8 +138,6 @@ int __cdecl main(void)
 		next = engine.set_get_next_play_order();
 	}
 	
-	
-
 	std::cout << "game_result: " << (int)game_result << std::endl;
 
 	switch (game_result)
