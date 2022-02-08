@@ -18,7 +18,7 @@ void increment_from_reference(int& a)
 	a++;
 }
 
-int summary(int& value_1, int& value_2)
+int sum(int value_1, int value_2)
 {
 	return value_1 + value_2;
 }
@@ -51,14 +51,13 @@ int main()
 		std::cerr << ex.code() << '\n';
 		std::cerr << "Error: file didn't open! Values can't be read." << '\n';
 	}
-	static int a = 0, b = 0;
+	int a = 0, b = 0;
 	int result = 0;
 	file >> a >> b;
 
-	std::thread thr_three([&result]() {result = summary(std::ref(a), std::ref(b)); }); //why it works with static variables and how to capture with lambdas(e.g. typical int)?
+	std::thread thr_three([&result, a, b]() {result = sum(a, b); });
 	thr_three.join();
 	
-	//should I close file?
 	std::ofstream out(output_path, std::ios::app); //new line in new file, if it doesn't exist
 	try
 	{
